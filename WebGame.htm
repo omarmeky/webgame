@@ -1,0 +1,52 @@
+<html>
+	<head>
+		<title>OPNET Technologies Software Engineer Candidate Web Test</title>
+	</head>
+	<body>
+		<div id="square" style="background-color: green; width: 50px; height: 50px; font-size: 40px; text-align: center; position: absolute; top: 100; left: 100;">5</div>
+		<script>
+			(function() {
+				var square = document.getElementById('square'),
+						elapsed = 0,
+						interval = null,
+						mouseX,
+						mouseY,
+						squareTop,
+						squareLeft,
+						squareHeight = square.offsetHeight,
+						squareWidth = square.offsetWidth;
+				document.onmousemove = function(e) {
+					mouseX = e.pageX,
+					mouseY = e.pageY;
+				}
+				square.addEventListener('mouseenter', function() {
+					if (!interval) {
+						interval = setInterval(function() {
+							elapsed++;
+						}, 1000);
+					}
+					squareTop = squareLeft = null;
+					while(squareTop === null || squareLeft === null || (mouseY >= squareTop && mouseY <= (squareTop + squareHeight) && mouseX <= (squareLeft + squareWidth) && mouseX >= squareLeft)) {
+						squareTop = Math.floor(Math.random() * (window.innerHeight - squareHeight + 1)),
+						squareLeft = Math.floor(Math.random() * (window.innerWidth - squareWidth + 1));
+					}
+					square.innerHTML = +square.innerHTML - 1,
+					square.style.top = squareTop,
+					square.style.left = squareLeft,
+					square.style.background = '#' + (Math.random() * 0xFFFFFF<<0).toString(16);
+					if (square.innerHTML == 0) {
+						clearInterval(interval);
+						if (window.confirm('Congratulations, you have won! It took you ' + elapsed + ' seconds to complete the game. Would you like to play again?')) {
+							square.innerHTML = 5,
+							elapsed = 0,
+							interval = null;
+						}
+						else {
+							window.location = 'http://www.opnet.com';
+						}
+					}
+				});
+			})();
+		</script>
+	</body>
+</html>
